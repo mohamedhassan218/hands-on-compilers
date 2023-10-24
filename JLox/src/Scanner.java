@@ -107,7 +107,6 @@ public class Scanner {
 		case ' ':
 		case '\r':
 		case '\t':
-			// Ignore whitespace.
 			break;
 		case '\n':
 			line++;
@@ -127,10 +126,13 @@ public class Scanner {
 		}
 	}
 
+	// Return true if the passed character is a number.
 	private boolean isDigit(char c) {
 		return c >= '0' && c <= '9';
 	}
 
+	// Substring the variable name (identifier), get it's token type
+	// from our map, and add it to the ArrayList of tokens.
 	private void identifier() {
 		while (isAlphaNumeric(peek()))
 			advance();
@@ -141,14 +143,17 @@ public class Scanner {
 		addToken(type);
 	}
 
+	// Return true if the character passed is alphabet.
 	private boolean isAlpha(char c) {
 		return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
 	}
 
+	// Return true if the character passed is alphabet or number.
 	private boolean isAlphaNumeric(char c) {
 		return isAlpha(c) || isDigit(c);
 	}
 
+	// Substring the number value from the source code and add it to the ArrayList of tokens.
 	private void number() {
 		while (isDigit(peek()))
 			advance();
@@ -162,12 +167,15 @@ public class Scanner {
 		addToken(TokenType.NUMBER, Double.parseDouble(source.substring(start, current)));
 	}
 
+	// Return the next character without moving the cursor.
 	private char peekNext() {
 		if (current + 1 >= source.length())
 			return '\0';
 		return source.charAt(current + 1);
 	}
 
+	// Work on the string until it reach the " at the end of it.
+	// Substring it and add it to the ArrayList of tokens.
 	private void string() {
 		while (peek() != '"' && !isAtEnd()) {
 			if (peek() == '\n')
@@ -185,12 +193,14 @@ public class Scanner {
 		addToken(TokenType.STRING, value);
 	}
 
+	// Return current character without moving the cursor.
 	private char peek() {
 		if (isAtEnd())
 			return '\0';
 		return source.charAt(current);
 	}
 
+	// Compare the current character with the expected one.
 	private boolean match(char expected) {
 		if (isAtEnd())
 			return false;
@@ -200,10 +210,7 @@ public class Scanner {
 		return true;
 	}
 
-	/*
-	 * The advance() method consumes the next character in the source file and
-	 * returns it.
-	 */
+	// Return current character and move cursor one character more.
 	private char advance() {
 		current++;
 		return source.charAt(current - 1);
@@ -213,15 +220,13 @@ public class Scanner {
 		addToken(type, null);
 	}
 
-	/*
-	 * Method addToken() is for output. It grabs the text of the current lexeme and
-	 * creates a new token for it.
-	 */
+	// Substring a token from the source code and add it to the ArrayList of tokens.
 	private void addToken(TokenType type, Object literal) {
 		String text = source.substring(start, current);
 		tokens.add(new Token(type, text, literal, line));
 	}
 
+	// Returns true if your cursor reaches the end of the file.
 	private boolean isAtEnd() {
 		return current >= source.length();
 	}

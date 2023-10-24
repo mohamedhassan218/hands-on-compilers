@@ -53,7 +53,7 @@ public class Lox {
 		}
 	}
 
-	/* Method responsible to run source code. */
+	/* Method to run source code. */
 	private static void run(String source) throws IOException {
 		Scanner scanner = new Scanner(source);
 		List<Token> tokens = scanner.scanTokens();
