@@ -1,4 +1,0 @@
-var x = 10;
-fun sum(int x, int y){
-	return x + y;
-}
